@@ -46,9 +46,13 @@
   background-color: #ffd8a8;
   color: #d9480f;
   transition: 0.2s;
+  /* overflow: scroll; */
 }
 
 .date:hover {
   transform: scale(1.05);
   cursor: pointer;
+}
+
+.manage-events-container {
 }

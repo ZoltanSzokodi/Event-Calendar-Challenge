@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Cell = ({ date, dayOfWeek }) => {
+const Cell = ({ date, dayOfWeek, events, selectDate }) => {
   return (
-    <div onClick={() => console.log(dayOfWeek)} className='date'>
+    <div className='date' onClick={() => selectDate(date, dayOfWeek, events)}>
       {date}
+      {events.length !== 0 && events.map(event => <span>{event.title}</span>)}
     </div>
   );
 };
