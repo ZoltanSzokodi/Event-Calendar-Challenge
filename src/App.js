@@ -69,7 +69,12 @@ const App = () => {
   return (
     <div className='wrapper'>
       {dateSelect.isSelected ? (
-        <ManageEvents dateSelect={dateSelect} unselectDate={unselectDate} />
+        <ManageEvents
+          dateSelect={dateSelect}
+          unselectDate={unselectDate}
+          dates={dates}
+          setDates={setDates}
+        />
       ) : (
         <div className='calendar'>
           <div className='calendar-header'>Please Select a Date</div>

@@ -1,24 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ordinalSuffixOf from '../utils/ordinalSuffixOf';
+import validateTime from '../utils/validateTime';
 import { v4 as uuidv4 } from 'uuid';
 
-const ManageEvents = ({ dateSelect, unselectDate }) => {
+const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
   const [eventData, setEventData] = useState({
+    date: dateSelect.date,
     title: '',
     description: '',
     begin: '',
     end: '',
   });
+  const [validationErr, setValidationErr] = useState('');
 
   const { title, description, begin, end } = eventData;
+
+  useEffect(() => {
+    setTimeout(() => {
+      setValidationErr('');
+    }, 5000);
+  }, [validationErr]);
 
   const handleChange = e =>
     setEventData({ ...eventData, [e.target.name]: e.target.value });
 
-  const handleSubmit = e => {
+  const addEvent = e => {
     e.preventDefault();
-    console.log({ ...eventData, id: uuidv4(), date: dateSelect.date });
+    if (eventData.title.length > 20 || eventData.title.length < 1) {
+      return setValidationErr('Title must be beween 1 and 20 characters');
+    }
+    if (
+      eventData.description.length > 100 ||
+      eventData.description.length < 10
+    ) {
+      return setValidationErr(
+        'Description must be beween 10 and 100 characters'
+      );
+    }
+    if (!validateTime(eventData.begin) || !validateTime(eventData.end)) {
+      return setValidationErr('Please enter a valid time (HH:MM)');
+    }
+
+    const datesArray = [...dates];
+
+    datesArray.map(date => {
+      if (date.date === eventData.date) {
+        date.events.push({ ...eventData, _id: uuidv4() });
+      }
+    });
+
+    setDates(datesArray);
   };
+
+  const removeEvent = e => {
+    const datesArray = [...dates];
+    datesArray.map(date => {
+      if (date.date === eventData.date) {
+        // date.events.filter(event => event._id !== e.target.id);
+        let index = date.events.indexOf(
+          date.events.find(event => event._id === e.target.id)
+        );
+        date.events.splice(index, 1);
+      }
+    });
+    setDates(datesArray);
+    // console.log(datesArray);
+  };
+
+  // console.log(dates.events);
 
   return (
     <div className='manage-events-container'>
@@ -30,7 +79,8 @@ const ManageEvents = ({ dateSelect, unselectDate }) => {
         <button onClick={unselectDate}>X</button>
       </div>
 
-      <form className='form' onSubmit={handleSubmit}>
+      <form className='form'>
+        {validationErr && <div>{validationErr}</div>}
         <div className='form-group'>
           <input
             type='text'
@@ -67,8 +117,16 @@ const ManageEvents = ({ dateSelect, unselectDate }) => {
             onChange={handleChange}
           />
         </div>
-        <input type='submit' className='btn' />
+        <button onClick={addEvent}>add event</button>
       </form>
+      <div>
+        {dateSelect.events.length !== 0 &&
+          dateSelect.events.map(event => (
+            <span key={event._id} id={event._id} onClick={removeEvent}>
+              {event.title}
+            </span>
+          ))}
+      </div>
     </div>
   );
 };

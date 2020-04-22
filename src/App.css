@@ -47,6 +47,29 @@
   color: #d9480f;
   transition: 0.2s;
   /* overflow: scroll; */
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+/* width */
+.date::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+.date::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.date::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.date::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .date:hover {
@@ -54,5 +77,21 @@
   cursor: pointer;
 }
 
-.manage-events-container {
+.date-number {
+  background-color: white;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+}
+
+.cell-note {
+  background-color: red;
+  width: max-content;
+  color: white;
+  border-radius: 2px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 2px;
+  margin: 2px 2px 2px 15px;
 }
