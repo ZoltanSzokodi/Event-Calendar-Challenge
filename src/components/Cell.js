@@ -10,9 +10,10 @@ const Cell = ({ date, dayOfWeek, events, selectDate }) => {
         events.map(event => (
           <CellNote
             key={event._id}
-            title={event.title}
-            begin={event.begin}
-            end={event.end}
+            name={event.name}
+            pax={event.pax}
+            table={event.table}
+            arrival={event.arrival}
           />
         ))}
     </div>

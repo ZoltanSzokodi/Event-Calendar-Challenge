@@ -1,9 +1,9 @@
 import React from 'react';
 
-const CellNote = ({ title, begin, end }) => {
+const CellNote = ({ name, pax, table, arrival }) => {
   return (
     <div className='cell-note'>
-      {begin} - {end}: {title}
+      {arrival} | {name} | pax: {pax} | table: {table}
     </div>
   );
 };

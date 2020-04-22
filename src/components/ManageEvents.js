@@ -6,19 +6,22 @@ import { v4 as uuidv4 } from 'uuid';
 const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
   const [eventData, setEventData] = useState({
     date: dateSelect.date,
-    title: '',
-    description: '',
-    begin: '',
-    end: '',
+    name: '',
+    pax: '',
+    table: '',
+    arrival: '',
   });
   const [validationErr, setValidationErr] = useState('');
 
-  const { title, description, begin, end } = eventData;
+  const { name, pax, table, arrival } = eventData;
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setValidationErr('');
     }, 5000);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [validationErr]);
 
   const handleChange = e =>
@@ -26,18 +29,16 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
 
   const addEvent = e => {
     e.preventDefault();
-    if (eventData.title.length > 20 || eventData.title.length < 1) {
-      return setValidationErr('Title must be beween 1 and 20 characters');
+    if (eventData.name.length > 20 || eventData.name.length < 1) {
+      return setValidationErr('Please enter guest name');
     }
-    if (
-      eventData.description.length > 100 ||
-      eventData.description.length < 10
-    ) {
-      return setValidationErr(
-        'Description must be beween 10 and 100 characters'
-      );
+    if (isNaN(parseInt(eventData.table))) {
+      return setValidationErr('Please enter a valid table number');
     }
-    if (!validateTime(eventData.begin) || !validateTime(eventData.end)) {
+    if (isNaN(parseInt(eventData.pax))) {
+      return setValidationErr('Please enter a valid number of guests');
+    }
+    if (!validateTime(eventData.arrival)) {
       return setValidationErr('Please enter a valid time (HH:MM)');
     }
 
@@ -52,79 +53,95 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
     setDates(datesArray);
   };
 
-  const removeEvent = e => {
+  const removeEvent = id => {
     const datesArray = [...dates];
+    console.log(id);
     datesArray.map(date => {
       if (date.date === eventData.date) {
         // date.events.filter(event => event._id !== e.target.id);
         let index = date.events.indexOf(
-          date.events.find(event => event._id === e.target.id)
+          date.events.find(event => event._id === id)
         );
         date.events.splice(index, 1);
       }
     });
     setDates(datesArray);
-    // console.log(datesArray);
   };
-
-  // console.log(dates.events);
 
   return (
     <div className='manage-events-container'>
       <div className='manage-events-header'>
-        <div>Manage Events</div>
-        <p>{`${dateSelect.dayOfWeek} the ${ordinalSuffixOf(
+        <h2>{`${dateSelect.dayOfWeek} the ${ordinalSuffixOf(
           dateSelect.date
-        )} - ${dateSelect.events.length} events`}</p>
-        <button onClick={unselectDate}>X</button>
+        )} - ${dateSelect.events.length} events`}</h2>
+        <button className='close-btn' onClick={unselectDate}>
+          X
+        </button>
       </div>
 
-      <form className='form'>
-        {validationErr && <div>{validationErr}</div>}
+      <div className='error-container'>
+        {!validationErr ? (
+          <h3>Add a new event</h3>
+        ) : (
+          <h3 className='error-msg'>{validationErr}</h3>
+        )}
+      </div>
+
+      <form className='manage-events-form'>
         <div className='form-group'>
           <input
             type='text'
-            placeholder='Title'
-            name='title'
-            value={title}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Description'
-            name='description'
-            value={description}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='tetx'
-            placeholder='Begin'
-            name='begin'
-            value={begin}
+            placeholder='Name of guest'
+            name='name'
+            value={name}
             onChange={handleChange}
           />
         </div>
         <div className='form-group'>
           <input
             type='text'
-            placeholder='End'
-            name='end'
-            value={end}
+            placeholder='Table No'
+            name='table'
+            value={table}
             onChange={handleChange}
           />
         </div>
-        <button onClick={addEvent}>add event</button>
+        <div className='form-group'>
+          <input
+            type='text'
+            placeholder='Num of guests'
+            name='pax'
+            value={pax}
+            onChange={handleChange}
+          />
+        </div>
+        <div className='form-group'>
+          <input
+            type='text'
+            placeholder='Arrival'
+            name='arrival'
+            value={arrival}
+            onChange={handleChange}
+          />
+        </div>
+        <button className='add-event-btn' onClick={addEvent}>
+          add event
+        </button>
       </form>
-      <div>
+
+      <div className='manage-events-list'>
         {dateSelect.events.length !== 0 &&
           dateSelect.events.map(event => (
-            <span key={event._id} id={event._id} onClick={removeEvent}>
-              {event.title}
-            </span>
+            <div
+              className='event'
+              onClick={() => removeEvent(event._id)}
+              key={event._id}
+              id={event._id}>
+              <div>Arrival: {event.arrival}</div>
+              <div>Name: {event.name}</div>
+              <div>Pax: {event.pax}</div>
+              <div>Table: {event.table}</div>
+            </div>
           ))}
       </div>
     </div>
