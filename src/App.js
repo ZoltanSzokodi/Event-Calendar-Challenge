@@ -25,29 +25,29 @@ const App = () => {
 
   // On component did mount populate the 'dates' state
   useEffect(() => {
-    const datesArray = [];
-    let dayNamesIndex = 0;
+    if (localStorage.dates) {
+      setDates(JSON.parse(localStorage.getItem('dates')));
+    } else {
+      const datesArray = [];
+      let dayNamesIndex = 0;
 
-    for (let date = 1; date <= 30; date++) {
-      if (dayNamesIndex > 6) dayNamesIndex = 0;
+      for (let date = 1; date <= 30; date++) {
+        if (dayNamesIndex > 6) dayNamesIndex = 0;
 
-      datesArray.push({
-        date,
-        dayOfWeek: dayNames[dayNamesIndex],
-        events: [],
-      });
-      dayNamesIndex++;
+        datesArray.push({
+          date,
+          dayOfWeek: dayNames[dayNamesIndex],
+          events: [],
+        });
+        dayNamesIndex++;
+      }
+      setDates(datesArray);
     }
-    setDates(datesArray);
   }, []);
 
   // EVENT HANDLERS =============================================
   // Select a specific date
   const selectDate = (date, dayOfWeek, events) => {
-    // events.sort((a, b) =>
-    //   a.arrival > b.arrival ? 1 : b.arrival > a.arrival ? -1 : 0
-    // );
-    console.log(events);
     setDateSelect({
       ...dateSelect,
       isSelected: true,
@@ -81,7 +81,7 @@ const App = () => {
         />
       ) : (
         <div className='calendar'>
-          <div className='calendar-header'>Reastaurant Reservations</div>
+          <div className='calendar-header'>Restaurant Reservations</div>
           {dayNames.map(dayName => (
             <div className='day-name' key={dayName}>
               {dayName}

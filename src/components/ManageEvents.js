@@ -58,6 +58,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
       }
     });
 
+    localStorage.setItem('dates', JSON.stringify(datesArray));
     setDates(datesArray);
 
     // After adding a new event (reservation) reset the state
@@ -81,6 +82,8 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
         date.events.splice(index, 1);
       }
     });
+
+    localStorage.setItem('dates', JSON.stringify(datesArray));
     setDates(datesArray);
   };
 
@@ -90,7 +93,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
       <div className='manage-events-header'>
         <h2>{`${dayOfWeek} the ${ordinalSuffixOf(date)} - ${
           events.length
-        } reservations`}</h2>
+        } reservation(s)`}</h2>
         <button className='close-btn' onClick={unselectDate}>
           <ion-icon name='close-outline' />
         </button>
@@ -98,7 +101,9 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
 
       <div className='error-container'>
         {!validationErr ? (
-          <h3>ADD RESERVATIONS</h3>
+          <h3>
+            Enter name, table number, number of people and arrival time (hh:mm)
+          </h3>
         ) : (
           <h3 className='error-msg'>{validationErr}</h3>
         )}
@@ -142,7 +147,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
           />
         </div>
         <button className='add-event-btn' onClick={addEvent}>
-          add event
+          add reservation
         </button>
       </form>
 
@@ -155,6 +160,10 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
               <Event key={event._id} event={event} removeEvent={removeEvent} />
             ))}
       </div>
+
+      <button className='go-back-btn' onClick={unselectDate}>
+        <ion-icon name='arrow-back-outline' /> See all reservations
+      </button>
     </div>
   );
 };

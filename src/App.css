@@ -81,10 +81,13 @@
 
 .date-number {
   background-color: white;
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 15px;
   height: 15px;
   text-align: center;
+  font-weight: bold;
 }
 
 .attention {
@@ -106,7 +109,7 @@
 }
 
 .cell-note:hover {
-  transform: translateX(-40%);
+  transform: translateX(-30%);
 }
 
 .manage-events-container {
@@ -130,7 +133,6 @@
   height: 5rem;
   background-color: #2f3542;
   color: #ffffff;
-  text-transform: uppercase;
   letter-spacing: 0.1rem;
   border-radius: 2px;
 }
@@ -200,7 +202,7 @@ input::placeholder {
   padding: 1rem;
   color: #ffffff;
   font-size: 14px;
-  transition: all 0.3 ease;
+  transition: 0.3s;
   cursor: pointer;
   border-radius: 2px;
   transform: translateY(20%);
@@ -238,4 +240,23 @@ input::placeholder {
   transform: scale(1.05);
   background-color: #fd7272;
   color: #ffffff;
+}
+
+.go-back-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: 0.2s;
+}
+
+.go-back-btn:hover {
+  transform: scale(1.1);
+}
+
+.go-back-btn:active {
+  outline: 0;
 }
