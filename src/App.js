@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import { v4 as uuidv4 } from 'uuid';
 import Cell from './components/Cell';
 import ManageEvents from './components/ManageEvents';
-// import ordinalSuffixOf from './utils/ordinalSuffixOf';
 import './App.css';
 
 const dayNames = [
@@ -25,6 +23,7 @@ const App = () => {
     events: [],
   });
 
+  // On component did mount populate the 'dates' state
   useEffect(() => {
     const datesArray = [];
     let dayNamesIndex = 0;
@@ -41,11 +40,14 @@ const App = () => {
     }
     setDates(datesArray);
   }, []);
-  // console.log(dates);
-  // console.log(dateSelect);
 
   // EVENT HANDLERS =============================================
+  // Select a specific date
   const selectDate = (date, dayOfWeek, events) => {
+    // events.sort((a, b) =>
+    //   a.arrival > b.arrival ? 1 : b.arrival > a.arrival ? -1 : 0
+    // );
+    console.log(events);
     setDateSelect({
       ...dateSelect,
       isSelected: true,
@@ -55,6 +57,7 @@ const App = () => {
     });
   };
 
+  // Un-select date
   const unselectDate = () => {
     setDateSelect({
       ...dateSelect,
@@ -68,6 +71,7 @@ const App = () => {
   // RENDER COMPONENT ==========================================
   return (
     <div className='wrapper'>
+      {/* IF there is a selected date, render the <ManageEvents /> component with the specific data - ELSE render the callendar */}
       {dateSelect.isSelected ? (
         <ManageEvents
           dateSelect={dateSelect}
@@ -77,13 +81,14 @@ const App = () => {
         />
       ) : (
         <div className='calendar'>
-          <div className='calendar-header'>Please Select a Date</div>
+          <div className='calendar-header'>Reastaurant Reservations</div>
           {dayNames.map(dayName => (
             <div className='day-name' key={dayName}>
               {dayName}
             </div>
           ))}
           {dates.map(date => (
+            // Individual cells with their unique data
             <Cell
               key={date.date}
               date={date.date}
