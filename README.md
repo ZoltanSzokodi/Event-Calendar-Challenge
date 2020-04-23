@@ -13,6 +13,9 @@ Reservation Callendar Application for hospitality establishments. Select a speci
 - the reservations appear in two places:
   1. in the ManageEvents component
   2. in the Calendar Date Cell (hover to see full reservation)
+  
+![Screenshot (37)](https://user-images.githubusercontent.com/44854026/80090771-4e958d80-8560-11ea-9b1d-5c5d599d4f40.png)
+![Screenshot (36)](https://user-images.githubusercontent.com/44854026/80090776-505f5100-8560-11ea-95b5-93eeb0d46971.png)
 
 ## Tech / Features
 
