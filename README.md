@@ -4,6 +4,9 @@
 
 Reservation Callendar Application for hospitality establishments. Select a specific date and add/remove reservations.
 
+## Deployed Version
+https://cosi-calendar.netlify.app/
+
 ## App Usage
 
 - click on a date Cell that you wish to edit
