@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+
+// COMPONENTS ===================================================
 import Event from './Event';
+
+// UTILITIES ====================================================
 import ordinalSuffixOf from '../utils/ordinalSuffixOf';
 import validateTime from '../utils/validateTime';
 import sortByArrival from '../utils/sortByArrival';
+
+// THIRD PARTY LIB ==============================================
 import { v4 as uuidv4 } from 'uuid';
 
 const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
@@ -20,6 +26,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
 
   const { name, pax, table, arrival } = eventData;
 
+  // Clear validation errors after 5s
   useEffect(() => {
     const timeout = setTimeout(() => {
       setValidationErr('');
@@ -58,6 +65,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
       }
     });
 
+    // Save to local storage
     localStorage.setItem('dates', JSON.stringify(datesArray));
     setDates(datesArray);
 
@@ -83,6 +91,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
       }
     });
 
+    // Save to local storage
     localStorage.setItem('dates', JSON.stringify(datesArray));
     setDates(datesArray);
   };
@@ -151,6 +160,7 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
         </button>
       </form>
 
+      {/* Render the events list */}
       <div className='manage-events-list'>
         {events.length !== 0 && <h3>DELETE RESERVATIONS (click)</h3>}
         {events.length !== 0 &&

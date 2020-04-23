@@ -1,9 +1,15 @@
 import React from 'react';
+
+// COMPONENTS ===================================================
 import CellNote from './CellNote';
 
 const Cell = ({ date, dayOfWeek, events, selectDate }) => {
   return (
-    <div className='date' onClick={() => selectDate(date, dayOfWeek, events)}>
+    <div
+      className={`date ${
+        (dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday') && 'weekend'
+      }`}
+      onClick={() => selectDate(date, dayOfWeek, events)}>
       {/* IF the date contains events (reservations) change date color */}
       <div className={`date-number ${events.length > 0 && 'attention'}`}>
         {date}

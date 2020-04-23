@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Cell from './components/Cell';
-import ManageEvents from './components/ManageEvents';
-import './App.css';
 
-const dayNames = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
+// COMPONENTS ===================================================
+import ManageEvents from './components/ManageEvents';
+import Cell from './components/Cell';
+
+// UTILITIES ====================================================
+import dayNames from './utils/dayNames';
+
+import './App.css';
 
 const App = () => {
   // COMPONENT STATE ============================================
@@ -25,8 +21,10 @@ const App = () => {
 
   // On component did mount populate the 'dates' state
   useEffect(() => {
+    // Check local storage for saved data
     if (localStorage.dates) {
       setDates(JSON.parse(localStorage.getItem('dates')));
+      // Create calendar grid
     } else {
       const datesArray = [];
       let dayNamesIndex = 0;
