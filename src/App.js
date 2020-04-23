@@ -7,7 +7,18 @@ import Cell from './components/Cell';
 // UTILITIES ====================================================
 import dayNames from './utils/dayNames';
 
+// THIRD PARTY LIB ==============================================
+import { bounceInLeft } from 'react-animations';
+import Radium, { StyleRoot } from 'radium';
+
 import './App.css';
+
+const styles = {
+  bounceInLeft: {
+    animation: 'x 1s',
+    animationName: Radium.keyframes(bounceInLeft, 'bounceInLeft'),
+  },
+};
 
 const App = () => {
   // COMPONENT STATE ============================================
@@ -78,24 +89,26 @@ const App = () => {
           setDates={setDates}
         />
       ) : (
-        <div className='calendar'>
-          <div className='calendar-header'>Restaurant Reservations</div>
-          {dayNames.map(dayName => (
-            <div className='day-name' key={dayName}>
-              {dayName}
-            </div>
-          ))}
-          {dates.map(date => (
-            // Individual cells with their unique data
-            <Cell
-              key={date.date}
-              date={date.date}
-              dayOfWeek={date.dayOfWeek}
-              events={date.events}
-              selectDate={selectDate}
-            />
-          ))}
-        </div>
+        <StyleRoot>
+          <div style={styles.bounceInLeft} className='calendar'>
+            <div className='calendar-header'>Restaurant Reservations</div>
+            {dayNames.map(dayName => (
+              <div className='day-name' key={dayName}>
+                {dayName}
+              </div>
+            ))}
+            {dates.map(date => (
+              // Individual cells with their unique data
+              <Cell
+                key={date.date}
+                date={date.date}
+                dayOfWeek={date.dayOfWeek}
+                events={date.events}
+                selectDate={selectDate}
+              />
+            ))}
+          </div>
+        </StyleRoot>
       )}
     </div>
   );

@@ -10,6 +10,15 @@ import sortByArrival from '../utils/sortByArrival';
 
 // THIRD PARTY LIB ==============================================
 import { v4 as uuidv4 } from 'uuid';
+import { bounceInLeft } from 'react-animations';
+import Radium, { StyleRoot } from 'radium';
+
+const styles = {
+  bounceInLeft: {
+    animation: 'x 1s',
+    animationName: Radium.keyframes(bounceInLeft, 'bounceInLeft'),
+  },
+};
 
 const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
   const { date, dayOfWeek, events } = dateSelect;
@@ -98,83 +107,90 @@ const ManageEvents = ({ dateSelect, unselectDate, dates, setDates }) => {
 
   // RENDER COMPONENT ==================================================
   return (
-    <div className='manage-events-container'>
-      <div className='manage-events-header'>
-        <h2>{`${dayOfWeek} the ${ordinalSuffixOf(date)} - ${
-          events.length
-        } reservation(s)`}</h2>
-        <button className='close-btn' onClick={unselectDate}>
-          <ion-icon name='close-outline' />
+    <StyleRoot>
+      <div style={styles.bounceInLeft} className='manage-events-container'>
+        <div className='manage-events-header'>
+          <h2>{`${dayOfWeek} the ${ordinalSuffixOf(date)} - ${
+            events.length
+          } reservation(s)`}</h2>
+          <button className='close-btn' onClick={unselectDate}>
+            <ion-icon name='close-outline' />
+          </button>
+        </div>
+
+        <div className='error-container'>
+          {!validationErr ? (
+            <h3>
+              Enter name, table number, number of people and arrival time
+              (hh:mm)
+            </h3>
+          ) : (
+            <h3 className='error-msg'>{validationErr}</h3>
+          )}
+        </div>
+
+        <form className='manage-events-form'>
+          <div className='form-group'>
+            <input
+              type='text'
+              placeholder='Name of guest...'
+              name='name'
+              value={name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='form-group'>
+            <input
+              type='text'
+              placeholder='Table No...'
+              name='table'
+              value={table}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='form-group'>
+            <input
+              type='text'
+              placeholder='Num of guests...'
+              name='pax'
+              value={pax}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='form-group'>
+            <input
+              type='text'
+              placeholder='Arrival...'
+              name='arrival'
+              value={arrival}
+              onChange={handleChange}
+            />
+          </div>
+          <button className='add-event-btn' onClick={addEvent}>
+            add reservation
+          </button>
+        </form>
+
+        {/* Render the events list */}
+        <div className='manage-events-list'>
+          {events.length !== 0 && <h3>DELETE RESERVATIONS (click)</h3>}
+          {events.length !== 0 &&
+            events
+              .sort(sortByArrival)
+              .map(event => (
+                <Event
+                  key={event._id}
+                  event={event}
+                  removeEvent={removeEvent}
+                />
+              ))}
+        </div>
+
+        <button className='go-back-btn' onClick={unselectDate}>
+          <ion-icon name='arrow-back-outline' /> See all reservations
         </button>
       </div>
-
-      <div className='error-container'>
-        {!validationErr ? (
-          <h3>
-            Enter name, table number, number of people and arrival time (hh:mm)
-          </h3>
-        ) : (
-          <h3 className='error-msg'>{validationErr}</h3>
-        )}
-      </div>
-
-      <form className='manage-events-form'>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Name of guest...'
-            name='name'
-            value={name}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Table No...'
-            name='table'
-            value={table}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Num of guests...'
-            name='pax'
-            value={pax}
-            onChange={handleChange}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Arrival...'
-            name='arrival'
-            value={arrival}
-            onChange={handleChange}
-          />
-        </div>
-        <button className='add-event-btn' onClick={addEvent}>
-          add reservation
-        </button>
-      </form>
-
-      {/* Render the events list */}
-      <div className='manage-events-list'>
-        {events.length !== 0 && <h3>DELETE RESERVATIONS (click)</h3>}
-        {events.length !== 0 &&
-          events
-            .sort(sortByArrival)
-            .map(event => (
-              <Event key={event._id} event={event} removeEvent={removeEvent} />
-            ))}
-      </div>
-
-      <button className='go-back-btn' onClick={unselectDate}>
-        <ion-icon name='arrow-back-outline' /> See all reservations
-      </button>
-    </div>
+    </StyleRoot>
   );
 };
 
